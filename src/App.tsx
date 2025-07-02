@@ -2,8 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { Amplify } from 'aws-amplify';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';  // Amplify UI styles
+import awsConfig from '../../web/amplify_outputs.json';
 
-function App() {
+Amplify.configure(awsConfig);
+
+export default function App() {
   const [count, setCount] = useState(0)
 
   return (
@@ -28,8 +34,14 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <Authenticator>
+      {({ signOut, user }) => (
+        <>
+          <h1>Hello, {user?.username}</h1>
+          <button onClick={signOut}>Sign out</button>
+        </>
+      )}
+    </Authenticator>
     </>
   )
 }
-
-export default App
